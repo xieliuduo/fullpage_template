@@ -1,2 +1,1 @@
 # fullpage_template
-xld

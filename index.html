@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="overflow: hidden; height: 100%;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>demo首页</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/jquery.fullPage.css">
+    <link rel="stylesheet" href="./css/animate.css">
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <ul id="menu">
+        <li data-menuanchor="section1" class="active">
+            <a href="#section1">第一屏</a>
+        </li>
+        <li data-menuanchor="section2">
+            <a href="#section2">第二屏</a>
+        </li>
+        <li data-menuanchor="section3">
+            <a href="#section3">第三屏</a>
+        </li>
+        <li data-menuanchor="section4">
+            <a href="#section4">第四屏</a>
+        </li>
+    </ul>
+    <div class="dropdown">⬇</div>
+    <div id="fp_wrapper" class="fullpage-wrapper">
+        <div class="section section1 active " data-anchor="section1">
+            <h3 class=" rubberBand">第一屏</h3>
+            <p class="fn">函数回调效果</p>
+            <div class=" ee rubberBand">css 效果</div>
+        </div>
+        <div class="section section2 " data-anchor="section2">
+            <h3>第二屏</h3>
+            <p class="fn">函数回调效果</p>
+            <div class=" animated" data-animate="fadeInRight" data-delay="0.3s">css 效果</div>
+            <div class=" animated" data-animate="fadeInLeft" data-delay="0.6s">css 效果</div>
+            <div class=" animated" data-animate="rubberBand" data-delay="0.9s">css 效果</div>
+        </div>
+        <div class="section section3  " data-anchor="section3">
+            <h3>第三屏</h3>
+            <div class="slide">第三屏的第一屏
+                <p class="fn">函数回调效果</p>
+                <span class="action">css 效果</span>
+                <div class=" rubberBand">css 效果</div>
+            </div>
+            <div class="slide">第三屏的第二屏</div>
+            <div class="slide">第三屏的第三屏
+                <p class="fn">函数回调效果</p>
+                <span class="action">css 效果</span>
+            </div>
+            <div class="slide">第三屏的第四屏</div>
+        </div>
+        <div class="section section4 " data-anchor="section4">
+            <h3>第四屏</h3>
+            <p class="fn">函数回调效果</p>
+            <span class="action">css 效果</span>
+        </div>
+       
+    </div>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery.fullPage.min.js"></script>
+    <script src="./js/h.js"></script>
+    <script>
+        $(function () {
+            $('#fp_wrapper').fullpage({
+                sectionsColor: ['#1bbc9b', '#4BBFC3', '#7BAABE', '#f90'], //section 背景色
+                anchors: ['section1', 'section2', 'section3', 'section4'], //锚点
+                menu: '#menu', //导航栏
+                // continuousVertical: true, //     循环滑动  end->first
+
+                navigation: true,
+                //当 section 从没有到 出现触发
+                afterLoad: function (anchorLink, index) {
+                    //注意 index 与 jq选择器的 区别 要 index-1
+                    $('.section').eq(index-1).find('.animated')
+                            .each(function () {
+                                $(this).css("animation-delay", $(this).data('delay')).addClass(
+                                    $(this).data('animate'));
+                        }).show();
+                    // if (index == 1) {
+                    //     $('.section1').find('.fn').delay(500).fadeIn(2000);
+                    //     console.log("section1 Load")
+                    // }
+                },
+                //当 section 从有到 消失 触发
+                onLeave: function (index, direction) {
+                    //$('.section' + index + ' .ee').find(".ee").removeClass("animated");
+                    $('.section').eq(index-1).find('.animated')
+                            .each(function () {
+                                $(this).removeClass(
+                                    $(this).data('animate'));
+                        }).fadeOut();
+                    if (index == '1') {
+                        $('.section1').find('.fn').delay(500).fadeOut(2000);
+                        console.log("section1 Leave")
+                    }
+                    if (index == '2') {
+                        $('.section2').find('.fn').delay(500).fadeOut(2000);
+                        console.log("section1 Leave")
+                    }
+                },
+            });
+
+            $('.dropdown').on('click',function(){
+                $.fn.fullpage.moveSectionDown();
+            })
+            setInterval(function () {
+                $.fn.fullpage.moveSlideRight();
+            }, 1000); //Slide 自动 滚动
+
+            /* setInterval(function () {
+                $.fn.fullpage.moveSectionDown();
+            }, 4000);//section 自动滚动 */
+        });
+    </script>
+    
+</body>
+
+</html>
